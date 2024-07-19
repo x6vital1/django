@@ -1,11 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from post_machine import models
 
 
 # Create your views here.
-def post_machines_view(request):
-    return HttpResponse('Post machines page')
-
-
-def one_post_machine_view(request, post_id):
-    return HttpResponse(f'One post machine {post_id}')
+def locker_view(request, machine_id):
+    one_post_machine = models.PostMachine.objects.get(pk=machine_id)
+    post_machine_locker = models.Locker.objects.filter(post_machine=one_post_machine)
+    one_locker = models.Locker.objects.get(pk=5)
+    return HttpResponse(f'Адрес: {one_post_machine.address}. Всего ящиков: {post_machine_locker.count()}.')
