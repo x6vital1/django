@@ -23,6 +23,9 @@ import user.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', user.views.user_page),
+    path('user/login/', user.views.user_login),
+    path('user/registration/', user.views.user_registration),
+    path('user/logout/', user.views.user_logout),
     path('parcel/', include('parcel.urls')),
     path('post_machines/', include('post_machine.urls')),
 ]

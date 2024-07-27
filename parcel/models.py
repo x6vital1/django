@@ -16,3 +16,6 @@ class Parcel(models.Model):
     open_datetime = models.DateTimeField('date published')
     update_datetime = models.DateTimeField('date published', default=datetime.now)
     status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.recipient} {self.sender} {self.size}'
