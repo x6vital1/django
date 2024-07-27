@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
+from user.forms import LoginForm, RegisterForm
+
 
 # Create your views here.
 
@@ -11,30 +13,33 @@ def user_page(request):
 
 
 def user_login(request):
+    context = {}
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/user/')
-        else:
-            return HttpResponse('User not found')
-    else:
-        return render(request, 'user/login.html')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('/user/')
+            context['error'] = 'Invalid username or password'
+    context['form'] = LoginForm()
+    return render(request, 'user/login.html', context=context)
 
 
 def user_registration(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        email = request.POST['email']
-        first_name = request.POST['first_name']
-        user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name)
-        user.save()
-        return redirect('/user/login/')
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password'],
+                email=form.cleaned_data['email'],
+                first_name=form.cleaned_data['first_name'])
+            user.save()
+            return redirect('/user/login/')
+        return render(request, 'user/registration.html', context={'form': RegisterForm(), 'error': form.errors})
     else:
-        return render(request, 'user/registration.html')
+        return render(request, 'user/registration.html', context={'form': RegisterForm()})
 
 
 def user_logout(request):

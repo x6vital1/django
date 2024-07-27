@@ -21,6 +21,7 @@ from django.urls import path, include
 import user.views
 
 urlpatterns = [
+    path('', user.views.user_page),
     path('admin/', admin.site.urls),
     path('user/', user.views.user_page),
     path('user/login/', user.views.user_login),
