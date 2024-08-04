@@ -27,6 +27,6 @@ urlpatterns = [
     path('user/login/', user.views.user_login),
     path('user/registration/', user.views.user_registration),
     path('user/logout/', user.views.user_logout),
-    path('parcel/', include('parcel.urls')),
-    path('post_machines/', include('post_machine.urls')),
+    path('parcels/', include('parcel.urls')),
+    path('post_machine/', include('post_machine.urls')),
 ]

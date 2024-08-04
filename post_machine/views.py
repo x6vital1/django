@@ -9,3 +9,7 @@ def locker_view(request, machine_id):
     post_machine_locker = models.Locker.objects.filter(post_machine=one_post_machine)
     one_locker = models.Locker.objects.get(pk=5)
     return HttpResponse(f'Адрес: {one_post_machine.address}. Всего ящиков: {post_machine_locker.count()}.')
+
+def post_machine_view(request):
+    post_machines = models.PostMachine.objects.all()
+    return render(request, 'post_machine/post_machines_page.html', {'post_machines': post_machines})

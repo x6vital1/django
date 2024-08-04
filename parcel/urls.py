@@ -4,6 +4,8 @@ import parcel.views
 
 urlpatterns = [
     path('', parcel.views.parcels_page),
+    path('get_parcel/', parcel.views.get_parcel),
     path('<parcel_id>/', parcel.views.one_parcel_page)
+
 
 ]

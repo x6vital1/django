@@ -3,13 +3,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
+from parcel import models
 from user.forms import LoginForm, RegisterForm
 
 
 # Create your views here.
 
 def user_page(request):
-    return render(request, 'user/user_page.html')
+    if request.user.is_authenticated:
+        parcels = models.Parcel.objects.filter(recipient=request.user)
+        return render(request, 'user/user_page.html', {'parcels': parcels})
+    else:
+        return redirect('/user/login/')
 
 
 def user_login(request):

@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <p>Your parcel: {{ parcel.post_machine_recipient.city }} {{ parcel.post_machine_recipient.address }}</p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+    {% if parcel.locker is not None and parcel.status == False %}
+        <div class="alert alert-success" role="alert">
+            <p>Подтвердите получение посылки</p>
+            <form method="post" action="/parcels/get_parcel/">
+                {% csrf_token %}
+                <input type="hidden" name="parcel_id" id="parcel_id" value="{{ parcel.pk }}">
+                <input type="submit" value="Подтвердить">
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -13,17 +13,20 @@ class LoginForm(forms.Form):
     )
 
 
-class RegisterForm(forms.ModelForm):
+class RegisterForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         help_text=None
     )
-
-    class Meta:
-        model = User
-        fields = ['username', 'password', 'email', 'first_name']
-        widgets = {
-            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'})
-        }
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        help_text=None
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        help_text=None
+    )
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        help_text=None
+    )

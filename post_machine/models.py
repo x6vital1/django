@@ -14,4 +14,4 @@ class Locker(models.Model):
     status = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'Город: {self.post_machine.city}, Адрес: {self.post_machine.address}, Размер: {self.size}'
+        return f'Город: {self.post_machine.city}, Адрес: {self.post_machine.address}, Размер: {self.size}, Статус: {self.status}'

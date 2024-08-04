@@ -1,13 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-Hello, {{ user.first_name }}<br>
-Your email: {{ user.email }}<br>
-Your last authorization: {{ user.last_login }}<br>
-<a href="/user/logout/">Logout</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="container mt-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Профиль</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Имя:</b> {{ user.first_name }}</li>
+                            <li class="list-group-item"><b>Почта:</b> {{ user.email }}</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form method="post" action="/user/logout/">
+                                {% csrf_token %}
+                                <input class="btn btn-sm btn-primary text-center" type="submit" value="Выйти">
+                            </form>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="/post_machine/" class="btn btn-sm btn-outline-primary text-center">Почтоматы</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container mt-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Ваши посылки</h3>
+                    </div>
+                    <div class="card-body">
+                        {% for parcel in parcels %}
+                            {% if parcel.status == False %}
+                                <div class="alert alert-danger" role="alert">
+                            {% else %}
+                                <div class="alert alert-success" role="alert">
+                            {% endif %}
+                        <h6 class="card-subtitle mb-2 text-muted">Почтомат: {{ parcel.post_machine_recipient }}</h6>
+                        <p class="card-text">Отправитель: {{ parcel.sender }}</p>
+                        <p class="card-text">Получатель: {{ parcel.recipient }}</p>
+                        <p class="card-text">Город: {{ parcel.post_machine_recipient.city }}</p>
+                        <p class="card-text">Адрес: {{ parcel.post_machine_recipient.address }}</p>
+                        <p class="card-text">Размер: {{ parcel.size }}</p>
+                        <p class="card-text">Статус: {% if parcel.status == False %} В пути {% else %} Открыт
+                            {{ parcel.open_datetime }} {% endif %}</p>
+                        {% if parcel.status == False %}
+                            <a class="btn btn-sm btn-primary" href="/parcels/{{ parcel.pk }}/">Посмотреть</a>
+                        {% endif %}
+                        </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
