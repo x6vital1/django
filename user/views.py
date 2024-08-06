@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 from parcel import models
 from user.forms import LoginForm, RegisterForm
+from django.views import View
 
 
 # Create your views here.
@@ -17,22 +18,25 @@ def user_page(request):
         return redirect('/user/login/')
 
 
-def user_login(request):
-    context = {}
-    if request.method == 'POST':
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'user/login.html', context={'form': LoginForm()})
+
+    def post(self, request):
         form = LoginForm(request.POST)
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
                 return redirect('/user/')
-            context['error'] = 'Invalid username or password'
-    context['form'] = LoginForm()
-    return render(request, 'user/login.html', context=context)
+        return render(request, 'user/login.html', context={'form': form, 'error': 'Invalid username or password'})
 
 
-def user_registration(request):
-    if request.method == 'POST':
+class UserRegistration(View):
+    def get(self, request):
+        return render(request, 'user/registration.html', context={'form': RegisterForm()})
+
+    def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = User.objects.create_user(
@@ -43,10 +47,11 @@ def user_registration(request):
             user.save()
             return redirect('/user/login/')
         return render(request, 'user/registration.html', context={'form': RegisterForm(), 'error': form.errors})
-    else:
-        return render(request, 'user/registration.html', context={'form': RegisterForm()})
 
 
-def user_logout(request):
-    logout(request)
-    return redirect('/user/login/')
+
+
+class UserLogout(View):
+    def post(self, request):
+        logout(request)
+        return redirect('/user/login/')

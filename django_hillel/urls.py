@@ -24,9 +24,9 @@ urlpatterns = [
     path('', user.views.user_page),
     path('admin/', admin.site.urls),
     path('user/', user.views.user_page),
-    path('user/login/', user.views.user_login),
-    path('user/registration/', user.views.user_registration),
-    path('user/logout/', user.views.user_logout),
+    path('user/login/', user.views.LoginView.as_view()),
+    path('user/registration/', user.views.UserRegistration.as_view()),
+    path('user/logout/', user.views.UserLogout.as_view()),
     path('parcels/', include('parcel.urls')),
     path('post_machine/', include('post_machine.urls')),
 ]

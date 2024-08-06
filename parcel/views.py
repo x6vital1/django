@@ -3,6 +3,7 @@ import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from parcel import models
+from django.views import View
 
 
 # Create your views here.
@@ -15,8 +16,9 @@ def one_parcel_page(request, parcel_id):
     parcel = models.Parcel.objects.get(pk=parcel_id)
     return render(request, 'parcels/one_parcel_page.html', {'parcel': parcel})
 
-def get_parcel(request):
-    if request.method == 'POST':
+
+class GetParcel(View):
+    def post(self, request):
         parcel_id = request.POST.get('parcel_id')
         parcel = models.Parcel.objects.get(pk=parcel_id)
         parcel.status = True

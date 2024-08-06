@@ -1,0 +1,19 @@
+services:
+  web:
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      DB_HOST: database
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+
+  db:
+    image: 'postgres'
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      DB_HOST: database
+    ports:
+      - 5432:5432
+    hostname: database
