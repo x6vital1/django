@@ -18,8 +18,7 @@ def one_parcel_page(request, parcel_id):
 
 
 class GetParcel(View):
-    def post(self, request):
-        parcel_id = request.POST.get('parcel_id')
+    def post(self, request, parcel_id):
         parcel = models.Parcel.objects.get(pk=parcel_id)
         parcel.status = True
         parcel.open_datetime = datetime.datetime.now()
