@@ -49,8 +49,6 @@ class UserRegistration(View):
         return render(request, 'user/registration.html', context={'form': RegisterForm(), 'error': form.errors})
 
 
-
-
 class UserLogout(View):
     def post(self, request):
         logout(request)
